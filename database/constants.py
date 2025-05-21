@@ -14,7 +14,7 @@ def make_keyboard(buttons, adjust):
 def make_keyboard_inline(buttons, adjust):
     builder = InlineKeyboardBuilder()
     for i in buttons:
-        builder.add(types.InlineKeyboardButton(text=i))
+        builder.button(text=i, callback_data='*')
     builder.adjust(adjust)
 
     return builder.as_markup()

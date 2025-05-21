@@ -6,6 +6,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from database.constants import *
 
+from bot.bot import Users
+from handlers.admin import send_update
+
 router = Router()
 
 
@@ -29,11 +32,11 @@ def main():
 
         text = (
             'Здравствуйте! Перед тем как вы расскажите нам о своей идее, мы расскажем, что точно не будет одобрено.\n\n'
-            'Что точно <u>не будет</u> принято:'
-            '\t1. Всё что запрещено законом (наркотики, экстремизм, расизм и тд.);'
-            '\t2. Материал сексуального характера;'
-            '\t3. Реклама чего-либо;'
-            '\t4. Сообщения, содержащие нецензурную лексику.'
+            'Что точно <u>не будет</u> принято:\n'
+            '\t1. Всё что запрещено законом (наркотики, экстремизм, расизм и тд.);\n'
+            '\t2. Материал сексуального характера;\n'
+            '\t3. Реклама чего-либо;\n'
+            '\t4. Сообщения, содержащие нецензурную лексику.\n'
         )
         await message.answer(text=text)
 
@@ -50,13 +53,27 @@ def main():
         await message.answer(text=text)
 
     @router.message()
-    async def message(message: types.Message):
-        if message.from_user.id not in ADMINS:
-            await message.reply('Вы админ!')
-            return
+    async def message(message: types.Message, bot: Bot):
 
-        text = f'Вашему сообщению присвоен номер {1}, ожидайте ответа от администраторов.'
+        try:
+            image = BytesIO()
+            await bot.download(message.photo[-1], destination=image)
+            image = image.getvalue()
+        except TypeError:
+            image = '-'
+
+        try:
+            text = message.text
+        except TypeError:
+            text = '-'
+
+        num = Users.get_data(num='Num')
+        Users.add_message(message.from_user.id, num + 1, text, message.from_user.full_name, image)
+
+        text = f'Вашему сообщению присвоен номер {num + 1}, ожидайте ответа от администраторов.'
         await message.reply(text=text)
+        await send_update()
+
 
 
 main()

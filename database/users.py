@@ -8,17 +8,26 @@ class MyDict:
 
         self.cursor.execute('''
         CREATE TABLE IF NOT EXISTS Messages (
-        USER_ID INTEGER PRIMARY KEY,
+        USER_ID INTEGER NOT NULL,
+        Num INTEGER NOT NULL,
         Text TEXT NOT NULL,
         Image TEXT NOT NULL,
-        Processed INTEGER NOT NULL)''')
+        Processed INTEGER NOT NULL,
+        Name TEXT NOT NULL)''')
 
-    def add_message(self, id, text, image='-', processed=0):
-        self.cursor.execute('INSERT INTO Messages (USER_ID, Text, Image, Processed) VALUES (?, ?, ?, ?)',
-                            (id, text, image, processed))
+    def add_message(self, id, num, text, name, image='-', processed=0):
+        self.cursor.execute('INSERT INTO Messages (USER_ID, Num, Text, Image, Processed, Text) VALUES (?, ?, ?, ?, ?, ?)',
+                            (id, num, text, image, processed, name))
         self.connection.commit()
 
     def change_process(self, id, num):
-        update = f"""UPDATE Messages SET Processed = ? WHERE USER_ID = ?"""
+        update = f"UPDATE Messages SET Processed = ? WHERE USER_ID = ?"
         self.cursor.execute(update, (num, id))
         self.connection.commit()
+
+    def get_data(self, num='*'):
+        res = self.cursor.execute(f"SELECT {num} FROM Messages ORDER BY Num DESC LIMIT 1;").fetchone()
+        self.connection.commit()
+
+        res = res[0] if num == 'Num' else res
+        return res
