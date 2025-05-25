@@ -15,6 +15,7 @@ load_dotenv('data/.env')
 API_TOKEN = os.getenv("API_TELEGRAM")
 
 Users = MyDict()
+Users.add_message(1, 1, 'das', 'asd')
 
 bot = Bot(token=API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()

@@ -14,10 +14,10 @@ def make_keyboard(buttons, adjust):
 def make_keyboard_inline(buttons, adjust):
     builder = InlineKeyboardBuilder()
     for i in buttons:
-        builder.button(text=i, callback_data='*')
+        builder.add(types.InlineKeyboardButton(text=i, callback_data='*'))
     builder.adjust(adjust)
 
     return builder.as_markup()
 
 
-ADMINS = [5240953558, 1602858870]
+ADMINS = [1602858870]

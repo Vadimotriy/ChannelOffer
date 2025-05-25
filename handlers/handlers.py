@@ -68,7 +68,7 @@ def main():
             text = '-'
 
         num = Users.get_data(num='Num')
-        Users.add_message(message.from_user.id, num + 1, text, message.from_user.full_name, image)
+        Users.add_message(message.from_user.id, num + 1, text, message.from_user.first_name, image)
 
         text = f'Вашему сообщению присвоен номер {num + 1}, ожидайте ответа от администраторов.'
         await message.reply(text=text)

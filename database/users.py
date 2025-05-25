@@ -13,10 +13,10 @@ class MyDict:
         Text TEXT NOT NULL,
         Image TEXT NOT NULL,
         Processed INTEGER NOT NULL,
-        Name TEXT NOT NULL)''')
+        Name_USER TEXT NOT NULL)''')
 
     def add_message(self, id, num, text, name, image='-', processed=0):
-        self.cursor.execute('INSERT INTO Messages (USER_ID, Num, Text, Image, Processed, Text) VALUES (?, ?, ?, ?, ?, ?)',
+        self.cursor.execute('INSERT INTO Messages (USER_ID, Num, Text, Image, Processed, Name_USER) VALUES (?, ?, ?, ?, ?, ?)',
                             (id, num, text, image, processed, name))
         self.connection.commit()
 
