@@ -20,8 +20,8 @@ class MyDict:
                             (id, num, text, image, processed, name))
         self.connection.commit()
 
-    def change_process(self, id, num):
-        update = f"UPDATE Messages SET Processed = ? WHERE USER_ID = ?"
+    def change_process(self, id, num=1):
+        update = f"UPDATE Messages SET Processed = ? WHERE Num = ?"
         self.cursor.execute(update, (num, id))
         self.connection.commit()
 
@@ -30,4 +30,10 @@ class MyDict:
         self.connection.commit()
 
         res = res[0] if num == 'Num' else res
+        return res
+
+    def get_data_from_num(self, num='*'):
+        res = self.cursor.execute(f"SELECT * FROM Messages WHERE Num = {num}").fetchone()
+        self.connection.commit()
+
         return res
