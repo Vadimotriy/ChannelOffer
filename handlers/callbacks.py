@@ -5,7 +5,7 @@ from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from database.constants import *
-from bot.bot import Users, bot
+from bot.bot import Users, bot, CHANNEL_ID
 
 router_for_callbacks = Router()
 
@@ -25,6 +25,9 @@ def main():
             await bot.send_message(chat_id=data[0], text=text)
             Users.change_process(num)
             await callback_query.answer()
+
+            text = data[2] if data[2] != '-' else 'Текст отсутствует'
+            await bot.send_message(chat_id=CHANNEL_ID, text=text)
 
     @router_for_callbacks.callback_query(F.data.startswith('О'))
     async def callback_accept(callback_query: types.CallbackQuery):

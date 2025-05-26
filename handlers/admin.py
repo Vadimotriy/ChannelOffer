@@ -28,7 +28,7 @@ def restore_from_base64_to_bytesio(base64_string):
 async def send_update():
     data = Users.get_data()
 
-    message = data[2] if data[2] != '-' else '<u>Текст отсутствует</u>'
+    message = data[2] if data[2] != '-' else 'Текст отсутствует'
     text = f"Сообщение номер {data[1]} от {data[5]}:\n\n{message}"
 
     if data[2] != '-' and data[3] == '-':
