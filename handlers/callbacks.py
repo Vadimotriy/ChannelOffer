@@ -1,5 +1,5 @@
 from aiogram import F, Router
-from database.constants import *
+from database.functions import *
 from bot.bot import Users, bot, CHANNEL_ID
 
 router_for_callbacks = Router()

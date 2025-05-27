@@ -4,10 +4,11 @@ from aiogram import types, F, Router, Bot
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
-from database.constants import *
+from database.functions import *
 
 from bot.bot import Users, ADMINS
 from handlers.admin import send_update
+from database.constants import *
 
 router = Router()
 
@@ -19,10 +20,8 @@ def main():
             await message.reply('Вы админ!')
             return
 
-        text = (f'Доброго времени суток, товарищь {message.from_user.first_name}!\n\n'
-                f'Отправляй свои идеи и предложения сюда, а наши администраторы просмотрят их и решат,'
-                f' что попадет на канал.')
-        await message.answer(text=text, reply_markup=make_keyboard(['Помощь', 'О партии'], 2))
+        text = start_text(message.from_user.first_name)
+        await message.answer(text=text, reply_markup=make_keyboard(['Помощь', 'О канале'], 2))
 
     @router.message(F.text == 'Помощь')
     async def help_user(message: types.Message):
@@ -30,26 +29,16 @@ def main():
             await message.reply('Вы админ!')
             return
 
-        text = (
-            'Здравствуйте! Перед тем как вы расскажите нам о своей идее, мы расскажем, что точно не будет одобрено.\n\n'
-            'Что точно <u>не будет</u> принято:\n'
-            '\t1. Всё что запрещено законом (наркотики, экстремизм, расизм и тд.);\n'
-            '\t2. Материал сексуального характера;\n'
-            '\t3. Реклама чего-либо;\n'
-            '\t4. Сообщения, содержащие нецензурную лексику.\n'
-        )
+        text = HELP_TEXT
         await message.answer(text=text)
 
-    @router.message(F.text == 'О партии')
+    @router.message(F.text == 'О канале')
     async def help_user(message: types.Message):
         if message.from_user.id not in ADMINS:
             await message.reply('Вы админ!')
             return
 
-        text = (
-            'Наша партия создана исключительно в развлекательных целях, ставя перед собой  '
-            'объединения людей со схожими взглядами и увлечениями, для хорошего времяпровождения.'
-        )
+        text = ABOUT_TEXT
         await message.answer(text=text)
 
     @router.message(F.text)

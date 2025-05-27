@@ -1,4 +1,4 @@
-from database.constants import *
+from database.functions import *
 from bot.bot import Users, bot, ADMINS
 
 

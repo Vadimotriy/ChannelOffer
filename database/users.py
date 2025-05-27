@@ -37,3 +37,8 @@ class MyDict:
         self.connection.commit()
 
         return res
+
+
+if __name__ == '__main__':
+    Users = MyDict()
+    Users.add_message(1, 0, 'das', 'asd')

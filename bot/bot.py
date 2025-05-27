@@ -13,11 +13,10 @@ logging.basicConfig(level=logging.INFO)
 
 load_dotenv('data/.env')
 API_TOKEN = os.getenv("API_TELEGRAM")
-ADMINS = [os.getenv("ADMINS")]
+ADMINS = os.getenv("ADMINS").split('_')
 CHANNEL_ID = os.getenv("CHANNEL_ID")
 
 Users = MyDict()
-Users.add_message(1, 1, 'das', 'asd')
 
 bot = Bot(token=API_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
