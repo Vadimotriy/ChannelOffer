@@ -1,9 +1,5 @@
-import base64
-
 from aiogram import types, F, Router, Bot
-from aiogram.filters import Command, StateFilter
-from aiogram.fsm.context import FSMContext
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+from aiogram.filters import Command
 from database.functions import *
 
 from bot.bot import Users, ADMINS
@@ -43,6 +39,10 @@ def main():
 
     @router.message(F.text)
     async def message(message: types.Message, bot: Bot):
+        if message.from_user.id not in ADMINS:
+            await message.reply('Вы админ!')
+            return
+
         image = '-'
         text = message.text
 
@@ -55,6 +55,10 @@ def main():
 
     @router.message(F.photo)
     async def message(message: types.Message, bot: Bot):
+        if message.from_user.id not in ADMINS:
+            await message.reply('Вы админ!')
+            return
+
         photo = message.photo[-1]
         file = await bot.get_file(photo.file_id)
         file_path = file.file_path
