@@ -4,6 +4,7 @@ from bot.bot import bot, dp
 from handlers.handlers import router
 from handlers.callbacks import router_for_callbacks
 
+# запуск
 if __name__ == '__main__':
     dp.include_router(router)
     dp.include_router(router_for_callbacks)

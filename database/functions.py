@@ -6,6 +6,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 from aiogram.types import BufferedInputFile, CallbackQuery, InlineKeyboardButton, KeyboardButton
 
 
+# клавиатура для пользователя
 def make_keyboard(buttons, adjust):
     builder = ReplyKeyboardBuilder()
     for i in buttons:
@@ -15,6 +16,7 @@ def make_keyboard(buttons, adjust):
     return builder.as_markup()
 
 
+# создание инлайн клавиатуры для админов
 def make_keyboard_inline(buttons, adjust, num, admin):
     builder = InlineKeyboardBuilder()
     for i in buttons:
@@ -24,6 +26,7 @@ def make_keyboard_inline(buttons, adjust, num, admin):
     return builder.as_markup()
 
 
+# декодировка изображений, для aiogram
 def decode_image(base64_string):
     image_data = base64.b64decode(base64_string)
 
@@ -36,10 +39,10 @@ def decode_image(base64_string):
 
     return photo
 
-
+# изменение сообщений
 async def update(callback: CallbackQuery, update: str, image):
-    if image == '-':
+    if image == '-':  # когда нет фотографий
         await callback.message.edit_text(update)
-    else:
+    else:  # когда есть
         await callback.message.edit_caption(caption=update)
 
