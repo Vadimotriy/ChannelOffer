@@ -52,25 +52,10 @@ def main():
         )
         await message.answer(text=text)
 
-
-    @router.message()
+    @router.message(F.text)
     async def message(message: types.Message, bot: Bot):
-
-        try:
-            photo = message.photo[-1]
-            file = await bot.get_file(photo.file_id)
-            file_path = file.file_path
-            photo_bytes = await bot.download_file(file_path)
-
-            image = base64.b64encode(photo_bytes.read()).decode('utf-8')
-            text = message.caption
-            if not text:
-                text = '-'
-        except TypeError:
-            image = '-'
-            text = message.text
-
-        print(type(text), text)
+        image = '-'
+        text = message.text
 
         num = Users.get_data(num='Num')
         Users.add_message(message.from_user.id, num + 1, text, message.from_user.first_name, image)
@@ -79,6 +64,24 @@ def main():
         await message.reply(text=text)
         await send_update()
 
+    @router.message(F.photo)
+    async def message(message: types.Message, bot: Bot):
+        photo = message.photo[-1]
+        file = await bot.get_file(photo.file_id)
+        file_path = file.file_path
+        photo_bytes = await bot.download_file(file_path)
+
+        image = base64.b64encode(photo_bytes.read()).decode('utf-8')
+        text = message.caption
+        if not text:
+            text = '-'
+
+        num = Users.get_data(num='Num')
+        Users.add_message(message.from_user.id, num + 1, text, message.from_user.first_name, image)
+
+        text = f'Вашему сообщению присвоен №{num + 1}, ожидайте ответа от администраторов.'
+        await message.reply(text=text)
+        await send_update()
 
 
 main()
